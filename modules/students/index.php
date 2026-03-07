@@ -110,7 +110,7 @@ include __DIR__ . '/../../includes/header.php';
 .pg-count-badge { font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; background:var(--info-light); color:var(--primary-light); }
 .pg-showing { font-size:12px; color:var(--text-muted); font-weight:500; }
 
-table.pg-table { width:100%; border-collapse:collapse; }
+table.pg-table { width:100%; border-collapse:collapse; table-layout:fixed; }
 table.pg-table thead tr { border-bottom:1px solid var(--border); }
 table.pg-table thead th { padding:11px 16px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--text-muted); text-align:left; white-space:nowrap; }
 table.pg-table tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
@@ -248,12 +248,12 @@ table.pg-table tbody td { padding:13px 16px; font-size:13px; color:var(--text-pr
     <table class="pg-table">
       <thead>
         <tr>
-          <th>Student ID</th>
-          <th>Student</th>
-          <th>Course</th>
-          <th>Admission Date</th>
-          <th>Status</th>
-          <th style="text-align:right;">Actions</th>
+          <th style="width: 15%;">Student ID</th>
+          <th style="width: 25%;">Student</th>
+          <th style="width: 25%;">Course</th>
+          <th style="width: 15%;">Admission Date</th>
+          <th style="width: 10%;">Status</th>
+          <th style="width: 10%; text-align:right;">Actions</th>
         </tr>
       </thead>
       <tbody>
