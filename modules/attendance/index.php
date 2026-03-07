@@ -98,11 +98,11 @@ include __DIR__ . '/../../includes/header.php';
 <div class="card mb-6" style="margin-bottom:24px;">
   <div class="card-body">
     <form method="GET" class="d-flex gap-3 align-center" style="flex-wrap:wrap;">
-      <div class="form-group" style="margin:0;">
+      <div class="form-group" style="margin:0; width: 160px;">
         <label class="form-label">Date</label>
-        <input type="date" name="date" class="form-control" value="<?= e($date) ?>" max="<?= date('Y-m-d') ?>">
+        <input type="date" name="date" class="form-control" value="<?= e($date) ?>" max="<?= date('Y-m-d') ?>" onchange="this.form.submit()">
       </div>
-      <div class="form-group" style="margin:0; min-width:220px;">
+      <div class="form-group" style="margin:0; width: 320px;">
         <label class="form-label">Class (<?= $dayOfWeek ?>)</label>
         <select name="class_id" class="form-control">
           <option value="">-- Select Class --</option>

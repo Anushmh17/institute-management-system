@@ -148,8 +148,8 @@ include __DIR__ . '/../../includes/header.php';
 <?php endif; ?>
 
 <?php if ($reportData): ?>
-<!-- REPORT CARD -->
-<div class="card" id="reportCard">
+<!-- ================= SCREEN REPORT CARD (Original Layout) ================= -->
+<div class="card" id="screenReportCard">
   <!-- Header -->
   <div style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 70%,var(--accent) 100%); padding:28px 32px; color:#fff; border-radius:16px 16px 0 0;">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
@@ -268,8 +268,13 @@ include __DIR__ . '/../../includes/header.php';
 
     <!-- Actions -->
     <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;">
-      <button onclick="window.print()" class="btn btn-outline">
-        <i class="ri-printer-line"></i> Print
+      <button onclick="
+        var prev = document.title;
+        document.title = '<?= addslashes(e($reportData['full_name'])) ?> - Report Card';
+        window.print();
+        document.title = prev;
+      " class="btn btn-outline">
+        <i class="ri-printer-line"></i> Print / Save PDF
       </button>
       <a href="<?= IMS_URL ?>/modules/reports/index.php" class="btn btn-primary">
         <i class="ri-arrow-left-line"></i> Back to Reports
@@ -278,14 +283,335 @@ include __DIR__ . '/../../includes/header.php';
   </div>
 </div>
 
+<!-- ================= PRINT ONLY REPORT CARD (Premium Institutional Transcript) ================= -->
+<div id="printReportCard">
+
+  <!-- ── TOP ACCENT BAR ── -->
+  <div style="height:6px; background:linear-gradient(90deg, #1e3a8a 0%, #3b63c9 100%);"></div>
+
+  <!-- ── 1. HEADER ── -->
+  <div style="display:flex; justify-content:space-between; align-items:center; padding:20px 44px; border-bottom:1px solid #dde3ec;">
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div style="width:50px; height:50px; background:#1e3a8a; color:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;">
+        <i class="ri-government-fill"></i>
+      </div>
+      <div>
+        <div style="font-size:19px; font-weight:800; color:#0f172a; line-height:1.1; letter-spacing:-0.3px;"><?= e($instituteName) ?></div>
+        <div style="font-size:11px; color:#64748b; margin-top:3px;"><?= e($instituteAddress) ?></div>
+      </div>
+    </div>
+    <div style="text-align:right; border-left:1px solid #e2e8f0; padding-left:20px;">
+      <div style="font-size:12px; font-weight:800; color:#1e3a8a; text-transform:uppercase; letter-spacing:1px;">Academic Report Card</div>
+      <div style="font-size:11px; color:#64748b; margin-top:3px;">Year: <strong style="color:#0f172a;"><?= get_setting('academic_year','2025-2026') ?></strong></div>
+      <div style="font-size:11px; color:#64748b; margin-top:2px;">Issued: <strong style="color:#0f172a;"><?= date('d M Y') ?></strong></div>
+    </div>
+  </div>
+
+  <!-- ── 2. STUDENT INFO + GRADE CARD ── -->
+  <div style="display:flex; align-items:stretch; border-bottom:1px solid #dde3ec;">
+
+    <!-- Student Info -->
+    <div style="flex:1; padding:18px 44px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+        <div style="width:3px; height:12px; background:#1e3a8a; border-radius:2px;"></div>
+        <div style="font-size:9.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Student Particulars</div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px 20px;">
+        <div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Full Name</div>
+          <div style="font-size:13px; font-weight:700; color:#0f172a;"><?= e($reportData['full_name']) ?></div>
+        </div>
+        <div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Student ID</div>
+          <div style="font-size:12px; font-weight:600; color:#0f172a; font-family:'Courier New',monospace;"><?= e($reportData['student_id']) ?></div>
+        </div>
+        <div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Programme</div>
+          <div style="font-size:12px; font-weight:600; color:#1e3a8a;"><?= e($reportData['course_name']??'--') ?></div>
+        </div>
+        <div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Batch Year</div>
+          <div style="font-size:12px; font-weight:500; color:#334155;"><?= e($reportData['batch_year']??'--') ?></div>
+        </div>
+        <div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Admitted</div>
+          <div style="font-size:12px; font-weight:500; color:#334155;"><?= $reportData['admission_date'] ? date('d M Y', strtotime($reportData['admission_date'])) : '--' ?></div>
+        </div>
+        <div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Email</div>
+          <div style="font-size:11px; color:#475569;"><?= e($reportData['email']) ?></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grade Card -->
+    <div style="width:148px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-left:1px solid #dde3ec; background:#f8fafc; padding:16px;">
+      <div style="text-align:center;">
+        <div style="font-size:9px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Overall Result</div>
+        <div style="width:76px; height:76px; border-radius:50%; background:#fff; border:2.5px solid <?= $reportData['overall_grade']==='F' ? '#ef4444' : '#1e3a8a' ?>; display:flex; align-items:center; justify-content:center; margin:0 auto;">
+          <div style="font-size:34px; font-weight:900; line-height:1; color:<?= $reportData['overall_grade']==='F' ? '#ef4444' : '#1e3a8a' ?>;"><?= e($reportData['overall_grade']) ?></div>
+        </div>
+        <div style="margin-top:8px; font-size:17px; font-weight:800; color:#0f172a;"><?= $reportData['overall_pct'] ?>%</div>
+        <div style="font-size:8.5px; color:#94a3b8; margin-top:2px; text-transform:uppercase; letter-spacing:0.5px;">Cumulative</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. TRANSCRIPT TABLE ── -->
+  <div class="prc-table" style="padding:16px 44px 0;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+      <div style="width:3px; height:12px; background:#1e3a8a; border-radius:2px;"></div>
+      <div style="font-size:9.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Transcript Summary</div>
+    </div>
+    <table style="width:100%; border-collapse:collapse; font-family:'Inter','Segoe UI',sans-serif;">
+      <thead>
+        <tr style="background:#f1f5f9;">
+          <th style="padding:11px 14px; text-align:left; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">Subject</th>
+          <th style="padding:11px 14px; text-align:left; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">Assessment Type</th>
+          <th style="padding:11px 14px; text-align:center; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">Score</th>
+          <th style="padding:11px 14px; text-align:center; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">Max</th>
+          <th style="padding:11px 14px; text-align:center; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">%</th>
+          <th style="padding:11px 14px; text-align:center; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($reportData['marks'] as $i => $m):
+          $p = $m['max_marks'] > 0 ? round($m['marks_obtained'] / $m['max_marks'] * 100, 1) : 0;
+          $gradeColor = $m['grade']==='F' ? '#ef4444' : '#1e3a8a';
+        ?>
+        <tr style="background:<?= $i % 2 === 0 ? '#ffffff' : '#f8fafc' ?>; border-bottom:1px solid #e8edf4;">
+          <td style="padding:10px 14px; font-size:12px; font-weight:600; color:#0f172a;"><?= e($m['subject']) ?></td>
+          <td style="padding:10px 14px; font-size:11px; color:#64748b;"><?= ucfirst(e($m['exam_type'])) ?></td>
+          <td style="padding:10px 14px; font-size:12px; font-weight:700; color:#0f172a; text-align:center;"><?= e($m['marks_obtained']) ?></td>
+          <td style="padding:10px 14px; font-size:11px; color:#94a3b8; text-align:center;"><?= e($m['max_marks']) ?></td>
+          <td style="padding:10px 14px; font-size:11px; font-weight:500; color:#475569; text-align:center;"><?= $p ?>%</td>
+          <td style="padding:10px 14px; text-align:center;">
+            <span style="display:inline-block; padding:3px 10px; border-radius:20px; background:<?= $m['grade']==='F'?'#fef2f2':'#eff4ff' ?>; font-size:11px; font-weight:800; color:<?= $gradeColor ?>;">
+              <?= e($m['grade']??'--') ?>
+            </span>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+
+    <?php
+      // Compute performance totals for summary bar
+      $totalObtained = array_sum(array_column($reportData['marks'], 'marks_obtained'));
+      $totalMax      = array_sum(array_column($reportData['marks'], 'max_marks'));
+      $totalSubjects = count($reportData['marks']);
+      $avgPct = $totalMax > 0 ? round($totalObtained / $totalMax * 100, 1) : 0;
+      $standing = match(true) {
+        $avgPct >= 90 => ['Distinction', '#065f46', '#d1fae5'],
+        $avgPct >= 75 => ['Merit',       '#1e40af', '#dbeafe'],
+        $avgPct >= 50 => ['Pass',         '#92400e', '#fef3c7'],
+        default       => ['Fail',         '#991b1b', '#fee2e2'],
+      };
+    ?>
+
+    <!-- ── PERFORMANCE SUMMARY STRIP ── -->
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:12px; border:1px solid #e2e8f0; border-radius:8px; overflow:hidden;">
+      <div style="padding:10px 14px; background:#f8fafc; border-right:1px solid #e2e8f0; text-align:center;">
+        <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:3px;">Total Subjects</div>
+        <div style="font-size:18px; font-weight:800; color:#0f172a;"><?= $totalSubjects ?></div>
+      </div>
+      <div style="padding:10px 14px; background:#f8fafc; border-right:1px solid #e2e8f0; text-align:center;">
+        <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:3px;">Marks Obtained</div>
+        <div style="font-size:18px; font-weight:800; color:#0f172a;"><?= $totalObtained ?> <span style="font-size:11px; color:#94a3b8;">/ <?= $totalMax ?></span></div>
+      </div>
+      <div style="padding:10px 14px; background:#f8fafc; border-right:1px solid #e2e8f0; text-align:center;">
+        <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:3px;">Average Score</div>
+        <div style="font-size:18px; font-weight:800; color:#1e3a8a;"><?= $avgPct ?>%</div>
+      </div>
+      <div style="padding:10px 14px; background:#f8fafc; text-align:center;">
+        <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:3px;">Academic Standing</div>
+        <div style="display:inline-block; padding:2px 12px; border-radius:20px; background:<?= $standing[2] ?>; font-size:12px; font-weight:800; color:<?= $standing[1] ?>; margin-top:1px;"><?= $standing[0] ?></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── GRADE SCALE + REMARKS (two-column) ── -->
+  <div style="display:flex; gap:0; padding:14px 44px 0;">
+
+    <!-- Grade Scale -->
+    <div style="flex:1; padding-right:24px; border-right:1px solid #e2e8f0;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <div style="width:3px; height:12px; background:#1e3a8a; border-radius:2px;"></div>
+        <div style="font-size:9.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Grade Scale</div>
+      </div>
+      <table style="width:100%; border-collapse:collapse; font-size:11px;">
+        <thead>
+          <tr style="background:#f1f5f9;">
+            <th style="padding:6px 10px; text-align:left; font-size:9px; font-weight:700; color:#475569; text-transform:uppercase; border-bottom:1px solid #e2e8f0;">Grade</th>
+            <th style="padding:6px 10px; text-align:left; font-size:9px; font-weight:700; color:#475569; text-transform:uppercase; border-bottom:1px solid #e2e8f0;">Range</th>
+            <th style="padding:6px 10px; text-align:left; font-size:9px; font-weight:700; color:#475569; text-transform:uppercase; border-bottom:1px solid #e2e8f0;">Remark</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ([
+            ['A+', '90–100%', 'Outstanding',  '#065f46', '#d1fae5'],
+            ['A',  '80–89%',  'Excellent',    '#1e3a8a', '#eff4ff'],
+            ['B+', '70–79%',  'Very Good',    '#1e40af', '#dbeafe'],
+            ['B',  '60–69%',  'Good',         '#0369a1', '#e0f2fe'],
+            ['C',  '50–59%',  'Satisfactory', '#92400e', '#fef3c7'],
+            ['F',  'Below 50','Fail',          '#991b1b', '#fee2e2'],
+          ] as [$g, $r, $rm, $tc, $bc]): ?>
+          <tr style="border-bottom:1px solid #f1f5f9;">
+            <td style="padding:5px 10px;">
+              <span style="display:inline-block; padding:1px 8px; border-radius:20px; background:<?= $bc ?>; font-size:10px; font-weight:800; color:<?= $tc ?>;"><?= $g ?></span>
+            </td>
+            <td style="padding:5px 10px; color:#334155; font-weight:600; font-size:11px;"><?= $r ?></td>
+            <td style="padding:5px 10px; color:#64748b; font-size:11px;"><?= $rm ?></td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Remarks -->
+    <div style="flex:1; padding-left:24px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <div style="width:3px; height:12px; background:#1e3a8a; border-radius:2px;"></div>
+        <div style="font-size:9.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Teacher's Remarks</div>
+      </div>
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px;">
+        <?php for ($rl = 0; $rl < 4; $rl++): ?>
+        <div style="border-bottom:1px dashed #cbd5e1; height:22px; margin-bottom:4px;"></div>
+        <?php endfor; ?>
+        <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:flex-end;">
+          <div>
+            <div style="border-bottom:1px solid #94a3b8; width:120px; margin-bottom:4px;"></div>
+            <div style="font-size:8.5px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Class Teacher Sign.</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="border-bottom:1px solid #94a3b8; width:100px; margin-bottom:4px;"></div>
+            <div style="font-size:8.5px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Date</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ATTENDANCE (4 cards) ── -->
+  <div style="padding:14px 44px 0;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+      <div style="width:3px; height:12px; background:#1e3a8a; border-radius:2px;"></div>
+      <div style="font-size:9.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Attendance Record</div>
+    </div>
+    <?php $attAbsent = $reportData['att_total'] - $reportData['att_present']; ?>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
+      <div style="padding:11px 10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; text-align:center;">
+        <div style="font-size:8.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:4px;">Classes Held</div>
+        <div style="font-size:20px; font-weight:800; color:#0f172a; line-height:1;"><?= $reportData['att_total'] ?></div>
+        <div style="font-size:8px; color:#94a3b8; margin-top:2px;">Total Sessions</div>
+      </div>
+      <div style="padding:11px 10px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; text-align:center;">
+        <div style="font-size:8.5px; font-weight:700; color:#16a34a; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:4px;">Present</div>
+        <div style="font-size:20px; font-weight:800; color:#16a34a; line-height:1;"><?= $reportData['att_present'] ?></div>
+        <div style="font-size:8px; color:#16a34a; margin-top:2px;">Days Attended</div>
+      </div>
+      <div style="padding:11px 10px; background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; text-align:center;">
+        <div style="font-size:8.5px; font-weight:700; color:#c2410c; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:4px;">Absent</div>
+        <div style="font-size:20px; font-weight:800; color:#c2410c; line-height:1;"><?= $attAbsent ?></div>
+        <div style="font-size:8px; color:#c2410c; margin-top:2px;">Days Missed</div>
+      </div>
+      <div style="padding:11px 10px; background:<?= $reportData['att_pct']>=75?'#eff6ff':'#fef2f2' ?>; border:1.5px solid <?= $reportData['att_pct']>=75?'#1e3a8a':'#fca5a5' ?>; border-radius:8px; text-align:center;">
+        <div style="font-size:8.5px; font-weight:700; color:<?= $reportData['att_pct']>=75?'#1e3a8a':'#dc2626' ?>; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:4px;">Rate</div>
+        <div style="font-size:20px; font-weight:800; color:<?= $reportData['att_pct']>=75?'#1e3a8a':'#dc2626' ?>; line-height:1;"><?= $reportData['att_pct'] ?>%</div>
+        <div style="font-size:8px; color:<?= $reportData['att_pct']>=75?'#1e3a8a':'#dc2626' ?>; margin-top:2px;"><?= $reportData['att_pct']>=75?'Satisfactory':'Below Minimum' ?></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SIGNATURES ── -->
+  <div style="padding:14px 44px 16px;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+      <div style="width:3px; height:12px; background:#1e3a8a; border-radius:2px;"></div>
+      <div style="font-size:9.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Authorized By</div>
+    </div>
+    <div style="display:flex;">
+      <?php foreach (['Class Teacher', 'Head of Department', 'Principal'] as $sig): ?>
+      <div style="flex:1; text-align:center; padding:0 20px;">
+        <div style="height:40px;"></div>
+        <div style="border-top:1px solid #94a3b8; padding-top:6px;">
+          <div style="font-size:9px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px;"><?= $sig ?></div>
+          <div style="font-size:8px; color:#94a3b8; margin-top:1px;">Signature &amp; Date</div>
+        </div>
+      </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div style="margin-top:auto; border-top:1px solid #e2e8f0; padding:10px 44px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc; flex-shrink:0;">
+    <div style="font-size:8.5px; color:#94a3b8;"><?= e($instituteName) ?> &bull; Official Academic Transcript &bull; Confidential Document</div>
+    <div style="font-size:8.5px; color:#94a3b8;"><?= date('d M Y, H:i') ?></div>
+  </div>
+  <div style="height:4px; background:linear-gradient(90deg, #1e3a8a 0%, #3b63c9 100%); flex-shrink:0;"></div>
+
+</div>
+
 <style>
+/* ── Screen: hide print card ── */
+#printReportCard { display: none; }
+
 @media print {
-  .sidebar, .topbar, .page-header, .card:not(#reportCard), form, .btn { display:none !important; }
-  .main-content { margin-left:0 !important; }
-  .content-area { padding:0 !important; }
-  #reportCard { box-shadow:none; border:none; }
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  body, html {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* Hide all screen UI chrome */
+  .sidebar,
+  .topbar,
+  .page-header,
+  .card,
+  form,
+  .btn,
+  .report-actions,
+  footer,
+  #screenReportCard { display: none !important; }
+
+  /* Keep wrappers visible so #printReportCard shows through */
+  .main-content,
+  .content-area,
+  .content-wrapper { display: block !important; margin: 0 !important; padding: 0 !important; }
+
+  /* Show the print card */
+  #printReportCard {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    font-family: 'Inter', 'Segoe UI', Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Transcript table section grows to fill remaining space */
+  #printReportCard > div.prc-table {
+    flex: 1 !important;
+    overflow: hidden;
+  }
+
+  /* Force backgrounds and colors to print */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  /* Prevent page breaks inside sections */
+  table, tr, td, th { page-break-inside: avoid; }
 }
 </style>
+
 <?php endif; ?>
 
 <?php include __DIR__ . '/../../includes/footer.php'; ?>
