@@ -91,7 +91,7 @@ table.pg-table tbody td { padding:13px 16px; font-size:13px; color:var(--text-pr
 .status-pill.active   { background:var(--success-light); color:var(--success-dark); }
 .status-pill.inactive { background:var(--bg-hover); color:var(--text-muted); }
 .status-dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
-.subj-badge { font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; background:var(--info-light); color:var(--primary); }
+.subj-badge { display:inline-flex; align-items:center; white-space:nowrap; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; background:var(--info-light); color:var(--primary); }
 .tbl-action-btn { width:32px; height:32px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; border:1.5px solid var(--border); background:var(--bg-card); color:var(--text-secondary); text-decoration:none; transition:all .18s; }
 .tbl-action-btn:hover { background:var(--bg-hover); color:var(--text-primary); border-color:var(--border-strong); }
 .tbl-action-btn.danger:hover { background:var(--danger-light); color:var(--danger); border-color:rgba(239,68,68,.3); }
