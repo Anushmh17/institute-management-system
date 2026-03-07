@@ -120,10 +120,10 @@ include __DIR__ . '/../../includes/header.php';
 }
 .pf-avatar-group {
   display: flex; align-items: flex-end; gap: 20px;
-  margin-top: -50px;
 }
 .pf-avatar-wrap {
   position: relative; flex-shrink: 0;
+  margin-top: -50px;
 }
 .pf-avatar {
   width: 100px; height: 100px; border-radius: 50%;

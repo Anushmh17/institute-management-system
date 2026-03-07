@@ -71,18 +71,18 @@ include __DIR__ . '/../../includes/header.php';
   display:flex; align-items:flex-end; justify-content:space-between;
   flex-wrap:wrap; gap:16px;
 }
-.spf-avatar-group { display:flex; align-items:flex-end; gap:20px; margin-top:-50px; }
+.spf-avatar-group { display:flex; align-items:flex-end; gap:20px; }
 .spf-avatar {
   width:100px; height:100px; border-radius:50%;
   object-fit:cover; border:4px solid var(--bg-card);
-  box-shadow:0 4px 20px rgba(0,0,0,.2);
+  box-shadow:0 4px 20px rgba(0,0,0,.2); margin-top:-50px;
 }
 .spf-initials {
   width:100px; height:100px; border-radius:50%;
   background:linear-gradient(135deg,#2563EB,#0284C7);
   display:flex; align-items:center; justify-content:center;
   font-family:var(--font-heading); font-size:34px; font-weight:800; color:#fff;
-  border:4px solid var(--bg-card); box-shadow:0 4px 20px rgba(0,0,0,.2);
+  border:4px solid var(--bg-card); box-shadow:0 4px 20px rgba(0,0,0,.2); margin-top:-50px;
 }
 .spf-identity { padding-bottom:6px; }
 .spf-identity h2 {
