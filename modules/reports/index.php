@@ -42,7 +42,8 @@ $reportData = null;
 if ($studentId) {
     $sStmt = $pdo->prepare(
         "SELECT s.*, u.full_name, u.email, u.phone, u.profile_photo,
-                c.name AS course_name, c.duration_months
+                c.name AS course_name, c.duration_months,
+                s.gender, s.date_of_birth, s.blood_group, s.guardian_name, s.guardian_phone, s.address
          FROM students s JOIN users u ON u.id=s.user_id
          LEFT JOIN courses c ON c.id=s.course_id
          WHERE s.id=? LIMIT 1"
@@ -316,7 +317,7 @@ include __DIR__ . '/../../includes/header.php';
         <div style="width:3px; height:12px; background:#1e3a8a; border-radius:2px;"></div>
         <div style="font-size:9.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Student Particulars</div>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px 20px;">
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px 24px;">
         <div>
           <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Full Name</div>
           <div style="font-size:13px; font-weight:700; color:#0f172a;"><?= e($reportData['full_name']) ?></div>
@@ -330,29 +331,54 @@ include __DIR__ . '/../../includes/header.php';
           <div style="font-size:12px; font-weight:600; color:#1e3a8a;"><?= e($reportData['course_name']??'--') ?></div>
         </div>
         <div>
-          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Batch Year</div>
-          <div style="font-size:12px; font-weight:500; color:#334155;"><?= e($reportData['batch_year']??'--') ?></div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Date of Birth</div>
+          <div style="font-size:12px; font-weight:500; color:#334155;"><?= $reportData['date_of_birth'] ? date('d M Y', strtotime($reportData['date_of_birth'])) : '--' ?></div>
         </div>
         <div>
-          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Admitted</div>
-          <div style="font-size:12px; font-weight:500; color:#334155;"><?= $reportData['admission_date'] ? date('d M Y', strtotime($reportData['admission_date'])) : '--' ?></div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Gender / Blood</div>
+          <div style="font-size:12px; font-weight:500; color:#334155;"><?= ucfirst(e($reportData['gender']??'--')) ?> / <?= e($reportData['blood_group']??'--') ?></div>
         </div>
         <div>
-          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Email</div>
-          <div style="font-size:11px; color:#475569;"><?= e($reportData['email']) ?></div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Batch / Year</div>
+          <div style="font-size:11px; color:#475569;"><?= e($reportData['batch_year']??'--') ?> (<?= $reportData['admission_date'] ? date('Y', strtotime($reportData['admission_date'])) : '--' ?>)</div>
+        </div>
+        <div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Guardian Name</div>
+          <div style="font-size:11px; color:#475569;"><?= e($reportData['guardian_name']??'--') ?></div>
+        </div>
+        <div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Phone / Guardian</div>
+          <div style="font-size:11px; color:#475569;"><?= e($reportData['phone']??'--') ?> / <?= e($reportData['guardian_phone']??'--') ?></div>
+        </div>
+        <div>
+          <div style="font-size:8.5px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px;">Residential Address</div>
+          <div style="font-size:10px; color:#64748b; line-height:1.2;"><?= e($reportData['address']??'--') ?></div>
         </div>
       </div>
     </div>
 
-    <!-- Grade Card -->
-    <div style="width:148px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-left:1px solid #dde3ec; background:#f8fafc; padding:16px;">
-      <div style="text-align:center;">
-        <div style="font-size:9px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Overall Result</div>
-        <div style="width:76px; height:76px; border-radius:50%; background:#fff; border:2.5px solid <?= $reportData['overall_grade']==='F' ? '#ef4444' : '#1e3a8a' ?>; display:flex; align-items:center; justify-content:center; margin:0 auto;">
-          <div style="font-size:34px; font-weight:900; line-height:1; color:<?= $reportData['overall_grade']==='F' ? '#ef4444' : '#1e3a8a' ?>;"><?= e($reportData['overall_grade']) ?></div>
+    <!-- Grade Card & Verification -->
+    <div style="width:160px; flex-shrink:0; border-left:1px solid #dde3ec; background:#f8fafc; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px;">
+      <div style="text-align:center; margin-bottom:20px;">
+        <div style="font-size:8.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Overall Result</div>
+        <div style="width:70px; height:70px; border-radius:50%; border:2.5px solid <?= $reportData['overall_grade']==='F' ? '#ef4444' : '#1e3a8a' ?>; background:#fff; display:flex; align-items:center; justify-content:center; margin:0 auto; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+          <div style="font-size:32px; font-weight:900; line-height:1; color:<?= $reportData['overall_grade']==='F' ? '#ef4444' : '#1e3a8a' ?>;"><?= e($reportData['overall_grade']) ?></div>
         </div>
-        <div style="margin-top:8px; font-size:17px; font-weight:800; color:#0f172a;"><?= $reportData['overall_pct'] ?>%</div>
-        <div style="font-size:8.5px; color:#94a3b8; margin-top:2px; text-transform:uppercase; letter-spacing:0.5px;">Cumulative</div>
+        <div style="margin-top:8px; font-size:16px; font-weight:800; color:#0f172a;"><?= $reportData['overall_pct'] ?>%</div>
+        <div style="font-size:8px; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px;">Cumulative</div>
+      </div>
+
+      <div style="text-align:center; padding-top:16px; border-top:1px solid #e2e8f0; width:100%;">
+        <div style="font-size:8px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Verification</div>
+        <!-- Mock QR Code Placeholder -->
+        <div style="width:64px; height:64px; background:#fff; border:1px solid #e2e8f0; margin:0 auto; display:flex; padding:4px;">
+           <div style="border:2px solid #000; width:100%; height:100%; display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(4,1fr);">
+              <?php for($qi=0;$qi<16;$qi++): ?>
+                <div style="background:<?= (rand(0,10)>4)?'#000':'#fff' ?>;"></div>
+              <?php endfor; ?>
+           </div>
+        </div>
+        <div style="font-size:7.5px; color:#94a3b8; margin-top:4px; font-family:monospace;">STU-VALID: <?= substr(md5($reportData['student_id']),0,8) ?></div>
       </div>
     </div>
   </div>
@@ -372,12 +398,14 @@ include __DIR__ . '/../../includes/header.php';
           <th style="padding:11px 14px; text-align:center; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">Max</th>
           <th style="padding:11px 14px; text-align:center; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">%</th>
           <th style="padding:11px 14px; text-align:center; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">Grade</th>
+          <th style="padding:11px 14px; text-align:center; font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid #cbd5e1;">Status</th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($reportData['marks'] as $i => $m):
           $p = $m['max_marks'] > 0 ? round($m['marks_obtained'] / $m['max_marks'] * 100, 1) : 0;
           $gradeColor = $m['grade']==='F' ? '#ef4444' : '#1e3a8a';
+          $isPass = $p >= 40;
         ?>
         <tr style="background:<?= $i % 2 === 0 ? '#ffffff' : '#f8fafc' ?>; border-bottom:1px solid #e8edf4;">
           <td style="padding:10px 14px; font-size:12px; font-weight:600; color:#0f172a;"><?= e($m['subject']) ?></td>
@@ -389,6 +417,9 @@ include __DIR__ . '/../../includes/header.php';
             <span style="display:inline-block; padding:3px 10px; border-radius:20px; background:<?= $m['grade']==='F'?'#fef2f2':'#eff4ff' ?>; font-size:11px; font-weight:800; color:<?= $gradeColor ?>;">
               <?= e($m['grade']??'--') ?>
             </span>
+          </td>
+          <td style="padding:10px 14px; text-align:center;">
+             <span style="font-size:10px; font-weight:700; color:<?= $isPass ? '#16a34a' : '#dc2626' ?>; text-transform:uppercase;"><?= $isPass ? 'PASS' : 'FAIL' ?></span>
           </td>
         </tr>
       <?php endforeach; ?>
@@ -540,6 +571,18 @@ include __DIR__ . '/../../includes/header.php';
         </div>
       </div>
       <?php endforeach; ?>
+    </div>
+  </div>
+
+  <!-- ── 6. GENERAL NOTES ── -->
+  <div style="padding:0 44px 14px; margin-top:-4px;">
+    <div style="background:#f1f5f9; border-radius:8px; padding:10px 14px; border:1px solid #e2e8f0;">
+      <div style="font-size:8px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Important Notes</div>
+      <div style="font-size:8.5px; color:#64748b; line-height:1.4;">
+        &bull; This is a computer-generated official academic transcript and does not require a physical seal unless explicitly requested.<br>
+        &bull; Any alteration or erasure on this document renders it invalid. Please report any discrepancies to the Registrar's Office within 7 days.<br>
+        &bull; For online verification of this report, visit the institute portal or scan the QR code above.
+      </div>
     </div>
   </div>
 
