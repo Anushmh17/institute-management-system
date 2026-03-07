@@ -284,6 +284,7 @@ function paginate(int $total, int $perPage, int $currentPage): array {
         'total_pages' => $totalPages,
         'offset'      => ($currentPage - 1) * $perPage,
         'has_prev'    => $currentPage > 1,
+        'has_next'    => $currentPage < $totalPages,
     ];
 }
 
