@@ -170,7 +170,7 @@ table.mk-table tbody td { padding:12px 16px; font-size:13px; vertical-align:midd
     <div style="position:relative; z-index:1;">
       <div class="mk-exam-tabs">
         <?php foreach ($examLabels as $val => $lbl): ?>
-        <?php $color = $examColors[$val] ?? var(--primary-light); ?>
+        <?php $color = $examColors[$val] ?? '#2563EB'; ?>
         <a href="?subject_id=<?= $subjectId ?>&exam_type=<?= $val ?>"
            class="mk-exam-tab <?= $examType === $val ? 'active' : '' ?>"
            style="<?= $examType === $val ? "background:{$color}; border-color:{$color}; box-shadow:0 3px 10px {$color}55;" : '' ?>"><?= $lbl ?></a>
