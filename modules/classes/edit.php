@@ -108,12 +108,12 @@ include __DIR__ . '/../../includes/header.php';
 </div>
 
 <?php if (!empty($errors)): ?>
-<div class="alert alert-danger"><i class="ri-error-warning-fill"></i>
+<div class="alert alert-danger" style="max-width:680px; margin:0 auto 20px;"><i class="ri-error-warning-fill"></i>
   <div><ul style="padding-left:16px;"><?php foreach($errors as $er): ?><li><?= e($er)?></li><?php endforeach;?></ul></div>
 </div>
 <?php endif; ?>
 
-<div class="card" style="max-width:680px;">
+<div class="card" style="max-width:680px; margin:0 auto;">
   <div class="card-header"><h3 class="card-title"><i class="ri-calendar-schedule-line"></i> Class Details</h3></div>
   <div class="card-body">
     <form method="POST" data-validate>
