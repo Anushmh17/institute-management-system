@@ -4,6 +4,12 @@
    Design: Modern Fluent / Google Admin inspired
 ================================================================ */
 
+/* --- Turbo Progress Bar ------------------------------------------ */
+.turbo-progress-bar {
+  height: 3px;
+  background-color: var(--primary);
+}
+
 /* --- Google Fonts ------------------------------------------------ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
 
@@ -178,6 +184,20 @@ textarea {
   transition: width var(--tx-normal), transform var(--tx-normal);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+}
+
+/* Prevent jumping/flashing during Turbo transitions */
+html.turbo-loading .sidebar,
+html.turbo-rendering .sidebar,
+html.turbo-loading .main-content,
+html.turbo-rendering .main-content {
+  transition: none !important;
+}
+
+/* Stop sidebar shaking during scroll restoration */
+html.turbo-loading #sidebarNav,
+html.turbo-rendering #sidebarNav {
+  scroll-behavior: auto !important;
 }
 
 .sidebar-logo {

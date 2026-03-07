@@ -36,9 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $maxM     = (int)($_POST['max_marks'] ?? 100);
     $passM    = (int)($_POST['pass_marks'] ?? 40);
 
-    if (empty($name)) $errors[] = 'Subject name required.';
-    if (empty($code)) $errors[] = 'Subject code required.';
-    if (!$cid)        $errors[] = 'Course required.';
+    if (empty($name))   $errors[] = 'Subject name required.';
+    if (empty($code))   $errors[] = 'Subject code required.';
+    if (!$cid)          $errors[] = 'Course required.';
+    if (!$tid)          $errors[] = 'Teacher required.';
 
     if (empty($errors)) {
         try {
@@ -47,7 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             set_toast('success',"Subject \"$name\" added!");
             header("Location: " . IMS_URL . "/modules/subjects/index.php?course_id=$cid");
             exit;
-        } catch (PDOException $e) { $errors[] = 'Code may already exist.'; }
+        } catch (PDOException $e) { 
+            if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+                $errors[] = 'Subject code "' . $code . '" is already in use.';
+            } else {
+                $errors[] = 'Could not save subject. Database error.';
+            }
+        }
     }
 }
 
@@ -138,23 +145,27 @@ include __DIR__ . '/../../includes/header.php';
               <option value="<?= $c['id'] ?>" <?= $courseId==$c['id']?'selected':'' ?>><?= e($c['name']) ?></option>
               <?php endforeach; ?>
             </select>
+            <div class="form-error">Please select a course.</div>
           </div>
           <div class="form-group">
-            <label class="form-label">Teacher</label>
-            <select name="teacher_id" class="form-control">
+            <label class="form-label">Assigned Teacher <span class="required">*</span></label>
+            <select name="teacher_id" class="form-control" required>
               <option value="">--Select Teacher--</option>
               <?php foreach ($teachers as $t): ?>
               <option value="<?= $t['id'] ?>"><?= e($t['full_name']) ?></option>
               <?php endforeach; ?>
             </select>
+            <div class="form-error">Please select a teacher.</div>
           </div>
           <div class="form-group">
             <label class="form-label">Subject Name <span class="required">*</span></label>
             <input type="text" name="name" class="form-control" required placeholder="e.g. Data Structures">
+            <div class="form-error">Subject name is required.</div>
           </div>
           <div class="form-group">
             <label class="form-label">Subject Code <span class="required">*</span></label>
             <input type="text" name="code" class="form-control" required placeholder="e.g. CS-201" style="text-transform:uppercase;">
+            <div class="form-error">Unique subject code is required.</div>
           </div>
           <div class="form-group">
             <label class="form-label">Credit Hours</label>

@@ -5,8 +5,8 @@
 
 'use strict';
 
-// ── DOM Ready ────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+// ── DOM Ready / Turbo Load ───────────────────────────────────────
+document.addEventListener('turbo:load', () => {
     initSidebar();
     initDarkMode();
     initProfileDropdown();
@@ -17,7 +17,84 @@ document.addEventListener('DOMContentLoaded', () => {
     initPhotoUpload();
     initFormValidation();
     initTableSort();
+    initPasswordToggle();
+
+    // Update active highlight in persistent sidebar
+    updateSidebarActiveLinks();
+
+    // Hide loading overlay if it was shown manually
+    hideLoading();
 });
+
+// Capture scroll specifically before Turbo caches or renders to be safe
+document.addEventListener('turbo:before-render', () => {
+    const nav = document.getElementById('sidebarNav');
+    if (nav) sessionStorage.setItem('sidebar-scroll', nav.scrollTop);
+});
+
+// Handle Turbo visit start
+document.addEventListener('turbo:before-visit', () => {
+    // Mobile sidebar cleanup: close on navigation
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar && sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        document.getElementById('sidebarOverlay')?.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+});
+
+// Capture scroll on any click within the sidebar nav for maximum reliability
+document.addEventListener('click', (e) => {
+    const navItem = e.target.closest('.sidebar-nav-item');
+    if (navItem) {
+        // Save scroll
+        const nav = document.getElementById('sidebarNav');
+        if (nav) sessionStorage.setItem('sidebar-scroll', nav.scrollTop);
+
+        // Immediate UI feedback
+        if (!navItem.classList.contains('active')) {
+            document.querySelectorAll('.sidebar-nav-item').forEach(el => el.classList.remove('active'));
+            navItem.classList.add('active');
+        }
+    }
+}, { passive: true });
+
+/**
+ * Updates navigation highlights for persistent sidebars
+ */
+function updateSidebarActiveLinks() {
+    const currentUrl = window.location.href;
+    document.querySelectorAll('.sidebar-nav-item').forEach(link => {
+        const isActive = link.href === currentUrl;
+
+        if (isActive) {
+            link.classList.add('active');
+            if (!link.querySelector('.active-indicator')) {
+                const indicator = document.createElement('span');
+                indicator.className = 'active-indicator';
+                link.appendChild(indicator);
+            }
+        } else {
+            link.classList.remove('active');
+            link.querySelector('.active-indicator')?.remove();
+        }
+    });
+}
+
+/**
+ * Hard reload scroll restoration
+ */
+function restoreSidebarScroll() {
+    const sidebarNav = document.getElementById('sidebarNav');
+    if (!sidebarNav) return;
+    const savedScroll = sessionStorage.getItem('sidebar-scroll');
+    if (savedScroll !== null) {
+        sidebarNav.scrollTop = parseInt(savedScroll, 10);
+    }
+}
+
+// Perform one-time restoration on hard page load
+window.addEventListener('load', restoreSidebarScroll);
 
 // ── SIDEBAR ──────────────────────────────────────────────────────
 function initSidebar() {
@@ -364,15 +441,21 @@ async function ajaxPost(url, data) {
 }
 
 // ── PASSWORD TOGGLE ───────────────────────────────────────────────
-document.querySelectorAll('.toggle-eye').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const input = btn.previousElementSibling;
-        if (!input) return;
-        const isPass = input.type === 'password';
-        input.type = isPass ? 'text' : 'password';
-        btn.className = `toggle-eye ri-${isPass ? 'eye-off' : 'eye'}-line`;
+function initPasswordToggle() {
+    document.querySelectorAll('.toggle-eye').forEach(btn => {
+        // Prevent duplicate listeners
+        if (btn.dataset.initialized) return;
+        btn.dataset.initialized = 'true';
+
+        btn.addEventListener('click', () => {
+            const input = btn.previousElementSibling;
+            if (!input) return;
+            const isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            btn.className = `toggle-eye ri-${isPass ? 'eye-off' : 'eye'}-line`;
+        });
     });
-});
+}
 
 // ── INLINE DELETE CONFIRM ─────────────────────────────────────────
 document.addEventListener('click', (e) => {

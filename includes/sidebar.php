@@ -71,7 +71,7 @@ $instituteName = get_setting('institute_name', 'ExcelIMS');
   <p class="sidebar-nav-label">NAVIGATION</p>
 
   <!-- Navigation -->
-  <nav class="sidebar-nav">
+  <nav class="sidebar-nav" id="sidebarNav" data-turbo-permanent>
     <ul>
       <?php foreach ($items as $item): ?>
         <?php $isActive = ($activePage === $item['key']); ?>

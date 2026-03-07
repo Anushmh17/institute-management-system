@@ -31,6 +31,9 @@ $toast = get_toast();
   <!-- Global Config -->
   <script>const IMS_URL = '<?= IMS_URL ?>/';</script>
 
+  <!-- Turbo Drive (SPA Feel) -->
+  <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@7.3.0/dist/turbo.es2017-umd.js" defer></script>
+
   <!-- Main CSS -->
   <link rel="stylesheet" href="<?= IMS_URL ?>/assets/css/style.css?v=sidebar_alignment_v6">
 </head>
