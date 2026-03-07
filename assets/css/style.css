@@ -1824,7 +1824,7 @@ textarea.form-control {
 }
 
 .profile-banner {
-  height: 140px;
+  height: 100px;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 60%, var(--accent) 100%);
   position: relative;
   overflow: hidden;
@@ -1840,52 +1840,52 @@ textarea.form-control {
 .profile-avatar-wrap {
   display: flex;
   align-items: center;
-  gap: var(--sp-6);
-  margin-top: -50px;
+  gap: var(--sp-5);
+  margin-top: -30px;
   position: relative;
   z-index: 5;
   padding: 0 var(--sp-6);
 }
 
 .profile-photo {
-  width: 120px;
-  height: 120px;
-  border-radius: var(--r-xl);
+  width: 90px;
+  height: 90px;
+  border-radius: var(--r-lg);
   border: 4px solid var(--bg-card);
   object-fit: cover;
   background: var(--bg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .profile-photo-initials {
-  width: 120px;
-  height: 120px;
-  border-radius: var(--r-xl);
+  width: 90px;
+  height: 90px;
+  border-radius: var(--r-lg);
   border: 4px solid var(--bg-card);
   background: linear-gradient(135deg, var(--primary-light), var(--primary));
   color: #fff;
-  font-size: 42px;
+  font-size: 32px;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .profile-name-block {
-  padding-top: 50px;
+  padding-top: 30px;
 }
 
 .profile-name-block h2 {
   font-family: var(--font-heading);
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .profile-id {
-  font-size: var(--fs-base);
+  font-size: 13px;
   color: var(--text-secondary);
   font-weight: 600;
   display: flex;
@@ -1903,20 +1903,20 @@ textarea.form-control {
 
 .detail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--sp-6);
-  padding: var(--sp-2);
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-4);
+  padding: var(--sp-1);
 }
 
 .detail-item {
   background: var(--bg);
-  padding: var(--sp-4) var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
   border-radius: var(--r-lg);
   border: 1px solid var(--border);
   transition: all var(--tx-fast);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .detail-item:hover {
@@ -1927,7 +1927,7 @@ textarea.form-control {
 }
 
 .detail-item label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -1935,16 +1935,16 @@ textarea.form-control {
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .detail-item label i {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--primary-light);
 }
 
 .detail-item span {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
 }
