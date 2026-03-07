@@ -441,7 +441,7 @@ table.db-table tbody td { padding:11px 16px; font-size:13px; vertical-align:midd
                 <?php if (!empty($s['profile_photo'])): ?>
                   <img src="<?= IMS_URL ?>/uploads/<?= e($s['profile_photo']) ?>" class="db-stu-img" alt="">
                 <?php else: ?>
-                  <div class="db-stu-init"><?= strtoupper(substr($s['full_name'],0,1)) ?></div>
+                  <div class="db-stu-init"><?= get_initials($s['full_name']) ?></div>
                 <?php endif; ?>
                 <div>
                   <div class="db-stu-name"><?= e($s['full_name']) ?></div>
@@ -605,7 +605,7 @@ if (attCtx) {
               <?php if (!empty($s['profile_photo'])): ?>
                 <img src="<?= IMS_URL ?>/uploads/<?= e($s['profile_photo']) ?>" class="db-stu-img" alt="">
               <?php else: ?>
-                <div class="db-stu-init"><?= strtoupper(substr($s['full_name'],0,1)) ?></div>
+                <div class="db-stu-init"><?= get_initials($s['full_name']) ?></div>
               <?php endif; ?>
               <span class="db-stu-name"><?= e($s['full_name']) ?></span>
             </div>

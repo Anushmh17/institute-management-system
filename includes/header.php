@@ -95,7 +95,7 @@ $toast = get_toast();
               <img src="<?= IMS_URL ?>/uploads/<?= e($_SESSION['photo']) ?>" alt="Profile" class="avatar-sm">
             <?php else: ?>
               <div class="avatar-initials">
-                <?= strtoupper(substr($_SESSION['full_name'] ?? 'U', 0, 1)) ?>
+                <?= get_initials($_SESSION['full_name'] ?? 'User') ?>
               </div>
             <?php endif; ?>
             <div class="profile-info">

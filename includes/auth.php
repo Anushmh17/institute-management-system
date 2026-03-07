@@ -284,6 +284,14 @@ function paginate(int $total, int $perPage, int $currentPage): array {
         'total_pages' => $totalPages,
         'offset'      => ($currentPage - 1) * $perPage,
         'has_prev'    => $currentPage > 1,
-        'has_next'    => $currentPage < $totalPages,
     ];
+}
+
+// --- Initial Extractor --------------------------------------------------------
+function get_initials(string $name): string {
+    $words = explode(' ', trim($name));
+    if (count($words) >= 2) {
+        return strtoupper(substr($words[0], 0, 1) . substr(end($words), 0, 1));
+    }
+    return strtoupper(substr($name, 0, 2));
 }

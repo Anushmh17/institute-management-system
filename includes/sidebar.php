@@ -58,7 +58,7 @@ $instituteName = get_setting('institute_name', 'ExcelIMS');
       <img src="<?= IMS_URL ?>/uploads/<?= e($_SESSION['photo']) ?>" alt="Profile" class="sidebar-avatar">
     <?php else: ?>
       <div class="sidebar-avatar-initials">
-        <?= strtoupper(substr($_SESSION['full_name'] ?? 'U', 0, 2)) ?>
+        <?= get_initials($_SESSION['full_name'] ?? 'User') ?>
       </div>
     <?php endif; ?>
     <div class="sidebar-user-info">
