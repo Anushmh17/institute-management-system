@@ -65,7 +65,17 @@ include __DIR__ . '/../../includes/header.php';
    TIMETABLE – Premium v2
 ═══════════════════════════════════════════ */
 
+/* ── Hero Banner ──────────────────────────── */
+.pg-hero { background:linear-gradient(135deg,#0F172A 0%,#8B5CF6 55%,#1E293B 100%); border-radius:20px; padding:32px 36px; margin-bottom:26px; position:relative; overflow:hidden; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+.pg-hero::before { content:''; position:absolute; width:400px; height:400px; background:radial-gradient(circle,rgba(139,92,246,.22) 0%,transparent 70%); top:-120px; right:-40px; pointer-events:none; }
+.pg-hero::after  { content:''; position:absolute; width:280px; height:280px; background:radial-gradient(circle,rgba(56,189,248,.12) 0%,transparent 70%); bottom:-80px; left:5%; pointer-events:none; }
+.pg-hero h1 { font-family:var(--font-heading); font-size:30px; font-weight:800; color:#fff; margin:0 0 5px; letter-spacing:-.4px; position:relative; z-index:1; }
+.pg-hero p  { font-size:13px; color:rgba(255,255,255,.6); margin:0; position:relative; z-index:1; }
+.pg-hero-btn { position:relative; z-index:1; padding:10px 20px; border-radius:12px; font-size:13px; font-weight:700; background:rgba(255,255,255,.1); color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,.2); backdrop-filter:blur(10px); transition:all .2s; cursor:pointer; }
+.pg-hero-btn:hover { background:rgba(255,255,255,.2); transform:translateY(-2px); }
+
 /* ── Page hero stat strip ────────────────── */
+
 .tt-stats {
   display: flex;
   gap: 12px;
@@ -369,17 +379,15 @@ include __DIR__ . '/../../includes/header.php';
 <!-- ════════════════════════════════════════════════════════
      PAGE HEADER
 ════════════════════════════════════════════════════════ -->
-<div class="page-header">
-  <div class="page-header-left">
-    <h1 class="page-title">Class Timetable</h1>
-    <p class="page-subtitle"><?= date('d M Y', strtotime('monday this week')) ?> - <?= date('d M Y', strtotime('friday this week')) ?></p>
+<div class="pg-hero">
+  <div>
+    <h1><i class="ri-calendar-event-line" style="margin-right:10px; color:#A78BFA;"></i>Class Timetable</h1>
+    <p>View and manage scheduled academic classes for the week.</p>
   </div>
   <?php if (is_admin()): ?>
-  <div class="page-header-actions">
-    <a href="<?= IMS_URL ?>/modules/classes/add.php" class="btn btn-primary">
-      <i class="ri-add-line"></i> Schedule Class
-    </a>
-  </div>
+  <a href="<?= IMS_URL ?>/modules/classes/add.php" class="pg-hero-btn">
+    <i class="ri-add-line"></i> Schedule Class
+  </a>
   <?php endif; ?>
 </div>
 

@@ -86,10 +86,19 @@ $instituteAddress = get_setting('institute_address', '');
 include __DIR__ . '/../../includes/header.php';
 ?>
 
-<div class="page-header">
-  <div class="page-header-left">
-    <h1 class="page-title">Reports & Report Cards</h1>
-    <p class="page-subtitle">Generate and view academic report cards</p>
+<style>
+/* ── Hero Banner ──────────────────────────── */
+.pg-hero { background:linear-gradient(135deg,#0F172A 0%,#EAB308 55%,#1E293B 100%); border-radius:20px; padding:32px 36px; margin-bottom:26px; position:relative; overflow:hidden; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+.pg-hero::before { content:''; position:absolute; width:400px; height:400px; background:radial-gradient(circle,rgba(234,179,8,.22) 0%,transparent 70%); top:-120px; right:-40px; pointer-events:none; }
+.pg-hero::after  { content:''; position:absolute; width:280px; height:280px; background:radial-gradient(circle,rgba(245,158,11,.12) 0%,transparent 70%); bottom:-80px; left:5%; pointer-events:none; }
+.pg-hero h1 { font-family:var(--font-heading); font-size:30px; font-weight:800; color:#fff; margin:0 0 5px; letter-spacing:-.4px; position:relative; z-index:1; }
+.pg-hero p  { font-size:13px; color:rgba(255,255,255,.7); margin:0; position:relative; z-index:1; }
+</style>
+
+<div class="pg-hero">
+  <div>
+    <h1><i class="ri-file-chart-line" style="margin-right:10px; color:#FDE047;"></i>Reports</h1>
+    <p>Generate and view academic report cards and transcripts.</p>
   </div>
 </div>
 
