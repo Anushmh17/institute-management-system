@@ -71,7 +71,7 @@ include __DIR__ . '/../../includes/header.php';
   <!-- Top Quick Info Cards -->
   <div class="settings-stats-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 30px;">
     
-    <div class="card" style="border:none; box-shadow: var(--shadow-md); background: linear-gradient(135deg, #fff, #f8faff);">
+    <div class="card" style="border:1px solid var(--border); box-shadow: var(--shadow-sm); background: var(--bg-card); border-radius:18px; overflow:hidden;">
       <div class="card-body d-flex align-items-center" style="padding: 24px; gap: 20px;">
         <div class="icon-circle" style="width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; background: rgba(30, 58, 138, 0.1); color: var(--primary);">
           <i class="ri-book-open-fill"></i>
@@ -86,7 +86,7 @@ include __DIR__ . '/../../includes/header.php';
       </div>
     </div>
 
-    <div class="card" style="border:none; box-shadow: var(--shadow-md); background: linear-gradient(135deg, #fff, #f8fffb);">
+    <div class="card" style="border:1px solid var(--border); box-shadow: var(--shadow-sm); background: var(--bg-card); border-radius:18px; overflow:hidden;">
       <div class="card-body d-flex align-items-center" style="padding: 24px; gap: 20px;">
         <div class="icon-circle" style="width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; background: rgba(16, 185, 129, 0.1); color: var(--success);">
           <i class="ri-shield-check-fill"></i>
