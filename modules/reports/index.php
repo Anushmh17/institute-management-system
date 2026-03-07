@@ -212,11 +212,14 @@ include __DIR__ . '/../../includes/header.php';
     <?php else: ?>
     <table style="margin-bottom:24px;">
       <thead><tr>
-        <th>Subject</th><th>Exam Type</th><th>Marks</th><th>Max</th><th>Percentage</th><th>Grade</th>
+        <th>Subject</th><th>Exam Type</th><th>Marks</th><th>Max</th><th>Percentage</th><th>Grade</th><th>Status</th>
       </tr></thead>
       <tbody>
         <?php foreach ($reportData['marks'] as $m): ?>
-        <?php $p = $m['max_marks']>0 ? round($m['marks_obtained']/$m['max_marks']*100,1) : 0; ?>
+        <?php 
+          $p = $m['max_marks']>0 ? round($m['marks_obtained']/$m['max_marks']*100,1) : 0; 
+          $isPass = $p >= 40;
+        ?>
         <tr>
           <td><?= e($m['subject']) ?></td>
           <td><span class="badge badge-muted"><?= ucfirst(e($m['exam_type'])) ?></span></td>
@@ -231,6 +234,9 @@ include __DIR__ . '/../../includes/header.php';
           <td>
             <?php $gc = match($m['grade']??'') { 'A+','A'=>'success','B+','B'=>'primary','C','D'=>'warning','F'=>'danger',default=>'muted' }; ?>
             <span class="badge badge-<?= $gc ?>"><?= e($m['grade']??'--') ?></span>
+          </td>
+          <td>
+             <span style="font-size:11px; font-weight:700; color:<?= $isPass ? 'var(--success)' : 'var(--danger)' ?>; text-transform:uppercase;"><?= $isPass ? 'PASS' : 'FAIL' ?></span>
           </td>
         </tr>
         <?php endforeach; ?>
