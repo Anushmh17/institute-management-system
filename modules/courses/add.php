@@ -65,6 +65,7 @@ include __DIR__ . '/../../includes/header.php';
   border-radius: 20px;
   box-shadow: var(--shadow-md);
   max-width: 860px;
+  margin: 0 auto;
   overflow: hidden;
 }
 .cf-card-header {
@@ -189,7 +190,7 @@ include __DIR__ . '/../../includes/header.php';
 
 <!-- Error Box -->
 <?php if (!empty($errors)): ?>
-<div class="cf-error-box" style="max-width:860px; margin-bottom:20px;">
+<div class="cf-error-box" style="max-width:860px; margin:0 auto 20px;">
   <i class="ri-error-warning-fill"></i>
   <div><ul><?php foreach($errors as $e): ?><li><?= e($e) ?></li><?php endforeach; ?></ul></div>
 </div>
